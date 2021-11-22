@@ -1,6 +1,8 @@
 package model;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -52,13 +54,12 @@ public class APIConnector {
 		return null;
 	}
 	
-	public String authConnectApi(String imgUrl, String headers) {
+	public JSONArray authConnectApi(String imgUrl, String headers) {
 		try {
 			URL callUrl = new URL(this.apiUrl + imgUrl);
-			System.out.println(callUrl);
+//			System.out.println(callUrl);
 			HttpURLConnection connection  = (HttpURLConnection)callUrl.openConnection();
 			connection.setRequestMethod("GET");
-//			connection.setRequestProperty("Accept", "*/*");
 			connection.setRequestProperty("Authorization","Basic YWNjXzY4YTQ1MDc1NmY1NWE5Mjo3NTIxZDk5MWYzYTE1MzNlY2E4MzRiNDQ2ZjViNGM5Yg==");
 			connection.connect();
 			
@@ -76,8 +77,20 @@ public class APIConnector {
 		        }
 		        
 		        String result = sb.toString();
-
-				return result;
+		        JSONParser parser = new JSONParser();
+//				System.out.println(result);
+				try {
+					JSONObject json = (JSONObject)parser.parse(result);
+					json = (JSONObject) json.get("result");
+					JSONArray tags = (JSONArray)json.get("tags");
+//					System.out.println(json);
+					return tags;
+				} catch (ParseException e) {
+					e.printStackTrace();
+					return null;
+				}
+		        
+		        
 			}
 		}catch(Exception e) {
 			System.out.println("Caught");

@@ -7,9 +7,12 @@ import java.util.ResourceBundle;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javafx.fxml.Initializable;
 import model.APIConnector;
+import model.Classifications;
 import model.Images;
 
 public class ImagesController implements Initializable {
@@ -25,16 +28,16 @@ public class ImagesController implements Initializable {
 
 		JSONArray images = new JSONArray();
 		images = (JSONArray) imgObj.get("results");
-		System.out.println(images);
+//		System.out.println(images);
 
 		for(int i = 0; i < images.size(); i++) { 
 				Images.imageLinks.add((String) images.get(i));
-				System.out.println(Images.imageLinks.get(i));
+//				System.out.println(Images.imageLinks.get(i));
 		}
 		
-		String detectObj = mlConnection.authConnectApi(Images.imageLinks.get(0), basicAuth);
-		System.out.println(detectObj);
-
+		JSONArray tagsData = mlConnection.authConnectApi(Images.imageLinks.get(0), basicAuth);
+		Classifications.toClassification(tagsData);
+//		System.out.println(tagsData);
 		
 	}
 	
