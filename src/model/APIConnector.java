@@ -22,7 +22,7 @@ public class APIConnector {
 		//Should return a JSON object
 		try {
 			URL url = new URL(this.apiUrl + query);
-			System.out.println(url);
+//			System.out.println(url);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.connect();
