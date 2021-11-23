@@ -4,3 +4,8 @@
 	-fx-background-color: #007dd7;
 	-fx-text-fill: white;
 }
+
+.label{
+	-fx-font-size: 16px;
+	-fx-text-fill: white;
+}

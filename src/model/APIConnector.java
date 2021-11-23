@@ -54,7 +54,7 @@ public class APIConnector {
 		return null;
 	}
 	
-	public JSONArray authConnectApi(String imgUrl, String headers) {
+	public JSONArray authConnectApi(String imgUrl) {
 		try {
 			URL callUrl = new URL(this.apiUrl + imgUrl);
 //			System.out.println(callUrl);
