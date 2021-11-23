@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,5 +41,18 @@ public class ImagesController implements Initializable {
 //		System.out.println(tagsData);
 		
 	}
-	
+
+	//Find a way to link this to the array for the images in order to subtract one from current placement
+	//in the array and display the data
+	public void previousImage(ActionEvent actionEvent) {
+
+
+	}
+
+	//Find a way to link this to the array for the images in order to add one from current placement
+	//in the array and display the data
+	public void nextImage(ActionEvent actionEvent) {
+
+
+	}
 }
