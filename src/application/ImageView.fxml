@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="imagesPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #291f1e;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ImagesController">
    <children>
-      <Label layoutX="290.0" layoutY="14.0" text="Found Images" textFill="#007dd7">
-         <font>
-            <Font name="Comic Sans MS" size="34.0" />
-         </font>
-      </Label>
       <ImageView fx:id="foundImage" fitHeight="371.0" fitWidth="393.0" layoutX="34.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true" />
       <VBox fx:id="imageClassifications" layoutX="472.0" layoutY="118.0" prefHeight="371.0" prefWidth="300.0" style="-fx-border-color: #007dd7;" stylesheets="@application.css" />
-      <Label alignment="CENTER" layoutX="472.0" layoutY="83.0" prefHeight="17.0" prefWidth="300.0" text="Classifications:" textFill="#007dd7">
+      <Text fill="#007dd7" fontSmoothingType="LCD" layoutX="286.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Found Images" textAlignment="CENTER" wrappingWidth="281.13671875">
          <font>
-            <Font name="Comic Sans MS" size="24.0" />
+            <Font name="Comic Sans MS Bold" size="24.0" />
          </font>
-      </Label>
+      </Text>
+      <Pane layoutX="473.0" layoutY="77.0" prefHeight="41.0" prefWidth="298.0">
+         <children>
+            <Text fill="#007dd7" fontSmoothingType="LCD" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tag" textAlignment="CENTER">
+               <font>
+                  <Font name="Comic Sans MS" size="24.0" />
+               </font>
+            </Text>
+            <Text fill="#007dd7" fontSmoothingType="LCD" layoutX="140.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confidence #" textAlignment="CENTER">
+               <font>
+                  <Font name="Comic Sans MS" size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Button id="searchBtn" layoutX="720.0" layoutY="535.0" mnemonicParsing="false" stylesheets="@application.css" text="Next" />
    </children>
 </AnchorPane>

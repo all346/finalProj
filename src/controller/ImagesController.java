@@ -72,32 +72,36 @@ public class ImagesController implements Initializable {
 			allImageData.add(classifications.toClassification(tagsData, Images.imageLinks.get(i), Images.query));
 		}
 		
+//		for(int i = 0; i < allImageData.size(); i++) {
+//			System.out.println(allImageData.get(i).imageLink);
+//		}
+		
 		//Iterating through classifications to display them
-		Image image = new Image(allImageData.get(1).imageLink);
+		Image image = new Image(allImageData.get(0).imageLink);
 		foundImage.setImage(image);
 		
-		for(Classification tag : allImageData.get(1).imageClassifications) {
-			HBox tagsBox = new HBox();
-			tagsBox.setMaxWidth(300);
-			tagsBox.setAlignment(Pos.CENTER);
+		for(Classification tag : allImageData.get(0).imageClassifications) {
 			
-			Label tagLabel = new Label(tag.tag);
-			tagLabel.getStyleClass().add("label");
-//			tagLabel.setTranslateX(-50);
-			
-			
-			Label confidenceLabel = new Label(String.valueOf(tag.confidenceLvl));
-			confidenceLabel.getStyleClass().add("label");
-
-//			confidenceLabel.setTranslateX(50);
-
-			
-			tagsBox.getChildren().addAll(tagLabel, confidenceLabel);
-			imageClassifications.getChildren().add(tagsBox);
-		}
-		
-//		for(int i = 0; i < allImageData.size(); i++) {
-//		}
+//			for(int i = 0;  i < allImageData.size(); i++) {
+//				Classification tag  = allImageData.get(i).imageClassifications.get(1);
+				
+//				System.out.println(allImageData.get(i));
+				
+				HBox tagsBox = new HBox();
+				tagsBox.setMaxWidth(300);
+				tagsBox.setAlignment(Pos.CENTER);
+				
+				Label tagLabel = new Label(tag.tag);
+				tagLabel.getStyleClass().add("label");
+				tagLabel.setTranslateX(-60);
+				
+				Label confidenceLabel = new Label(String.valueOf(tag.confidenceLvl));
+				confidenceLabel.getStyleClass().add("label");
+				confidenceLabel.setTranslateX(50);
+	
+				tagsBox.getChildren().addAll(tagLabel, confidenceLabel);
+				imageClassifications.getChildren().add(tagsBox);
+			}
 	}
 	
 }
