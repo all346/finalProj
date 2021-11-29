@@ -1,29 +1,26 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.ResourceBundle;
-
-import javax.swing.GroupLayout.Alignment;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.APIConnector;
-import model.Classification;
 import model.Classifications;
 import model.ImageComponent;
 import model.Images;
@@ -36,6 +33,42 @@ public class ImagesController implements Initializable {
 	@FXML
     private ImageView foundImage;
 
+	@FXML
+    private Text lvl1;
+
+    @FXML
+    private Text lvl2;
+
+    @FXML
+    private Text lvl3;
+
+    @FXML
+    private Text lvl4;
+
+    @FXML
+    private Text lvl5;
+
+    @FXML
+    private Text tag1;
+
+    @FXML
+    private Text tag2;
+
+    @FXML
+    private Text tag3;
+
+    @FXML
+    private Text tag4;
+
+    @FXML
+    private Text tag5;
+    
+    @FXML
+    private Text lvl6;
+    
+    @FXML
+    private Text tag6;
+	
     @FXML
     private VBox imageClassifications;
 	
@@ -45,63 +78,105 @@ public class ImagesController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		ArrayList<ImageComponent> allImageData = new ArrayList<ImageComponent>();
 		Classifications classifications = new Classifications();
 		APIConnector imgConnection = new APIConnector(imageUrl);
 		APIConnector mlConnection = new APIConnector(detectorUrl);
 		
-		JSONObject imgObj = imgConnection.connectAPI(Images.query);
+		refresh();
 
+		JSONObject imgObj = imgConnection.connectAPI(Images.query);
 		JSONArray images = new JSONArray();
 		images = (JSONArray) imgObj.get("results");
 		
 		//Adding to ArrayList or URL's
-		for(int i = 0; i < images.size(); i++) { 
-			if(i % 2 == 0) {
-				Images.imageLinks.add((String) images.get(i));
-			}
-			if(i > 8) {
-				break;
-			}
-		}
-
-		//Iterating through list of URL's to send them to ML and receive back Classifications
-		//Cannot call API more because of call limit
-		for(int i = 0; i < 2; i++) {
-			JSONArray tagsData = mlConnection.authConnectApi(Images.imageLinks.get(i));
-			allImageData.add(classifications.toClassification(tagsData, Images.imageLinks.get(i), Images.query));
-		}
-		
-//		for(int i = 0; i < allImageData.size(); i++) {
-//			System.out.println(allImageData.get(i).imageLink);
+//		for(int i = 1; i < images.size(); i++) { 
+//			if(i % 2 == 0) {
+//				Images.imageLinks.add((String) images.get(i));
+//			}
+//			if(i > 8) {
+//				break;
+//			}
 //		}
 		
+		int randomPic = (int) (0 + (Math.random() * ((images.size()-1) - 0)));
+		System.out.println(randomPic);
+		
+		JSONArray tagsData = mlConnection.authConnectApi((String) images.get(randomPic));
+		ImageComponent.allImageData.add(classifications.toClassification(tagsData, (String) images.get(randomPic), Images.query));
+		
+		//Iterating through list of URL's to send them to ML and receive back Classifications
+		//Cannot call API more because of call limit
+//		for(int i = 0; i < 3; i++) {
+////		JSONArray tagsData = mlConnection.authConnectApi(Images.imageLinks.get(i));
+//			JSONArray tagsData = mlConnection.authConnectApi((String) images.get(i));
+//			ImageComponent.allImageData.add(classifications.toClassification(tagsData, (String) images.get(i), Images.query));
+//		}
+		
+		updateUI();
+	}
+	
+	public void refresh() {
+		Images.imageLinks.clear();
+		ImageComponent.allImageData.clear();
+		Images.currImage = 0;
+	}
+	
+	public void updateUI() {
+		ImageComponent.currentComponent = ImageComponent.allImageData.get(Images.currImage);
+		
+//		System.out.println(ImageComponent.currentComponent);
+//		System.out.println(ImageComponent.currentComponent.imageClassifications.get(2).confidenceLvl);
+		
 		//Iterating through classifications to display them
-		Image image = new Image(allImageData.get(0).imageLink);
+		Image image = new Image(ImageComponent.currentComponent.imageLink);
 		foundImage.setImage(image);
 		
-		for(Classification tag : allImageData.get(0).imageClassifications) {
-			
-//			for(int i = 0;  i < allImageData.size(); i++) {
-//				Classification tag  = allImageData.get(i).imageClassifications.get(1);
-				
-//				System.out.println(allImageData.get(i));
-				
-				HBox tagsBox = new HBox();
-				tagsBox.setMaxWidth(300);
-				tagsBox.setAlignment(Pos.CENTER);
-				
-				Label tagLabel = new Label(tag.tag);
-				tagLabel.getStyleClass().add("label");
-				tagLabel.setTranslateX(-60);
-				
-				Label confidenceLabel = new Label(String.valueOf(tag.confidenceLvl));
-				confidenceLabel.getStyleClass().add("label");
-				confidenceLabel.setTranslateX(50);
-	
-				tagsBox.getChildren().addAll(tagLabel, confidenceLabel);
-				imageClassifications.getChildren().add(tagsBox);
-			}
+		//Hard Coding Because JavaFX sux
+		tag1.setText(ImageComponent.currentComponent.imageClassifications.get(0).tag);
+		tag2.setText(ImageComponent.currentComponent.imageClassifications.get(1).tag);
+		tag3.setText(ImageComponent.currentComponent.imageClassifications.get(2).tag);
+		tag4.setText(ImageComponent.currentComponent.imageClassifications.get(3).tag);
+		tag5.setText(ImageComponent.currentComponent.imageClassifications.get(4).tag);
+		tag6.setText(ImageComponent.currentComponent.imageClassifications.get(5).tag);
+
+		
+		lvl1.setText(String.valueOf(ImageComponent.currentComponent.imageClassifications.get(0).confidenceLvl));
+		lvl2.setText(String.valueOf(ImageComponent.currentComponent.imageClassifications.get(1).confidenceLvl));
+		lvl3.setText(String.valueOf(ImageComponent.currentComponent.imageClassifications.get(2).confidenceLvl));
+		lvl4.setText(String.valueOf(ImageComponent.currentComponent.imageClassifications.get(3).confidenceLvl));
+		lvl5.setText(String.valueOf(ImageComponent.currentComponent.imageClassifications.get(4).confidenceLvl));
+		lvl6.setText(String.valueOf(ImageComponent.currentComponent.imageClassifications.get(5).confidenceLvl));
+
 	}
+	
+	@FXML
+    void homeBtn(ActionEvent event) {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("../application/Main.fxml"));
+			Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			stage.hide();
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+	
+	@FXML
+    void nextBtn(ActionEvent event) {
+		if(Images.currImage < 2) {
+			Images.currImage++;
+			updateUI();
+		}
+    }
+
+    @FXML
+    void prevBtn(ActionEvent event) {
+    	if(Images.currImage != 0) {
+    		Images.currImage--;
+			updateUI();
+    	}
+    }
 	
 }

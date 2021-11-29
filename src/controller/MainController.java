@@ -21,12 +21,21 @@ public class MainController implements Initializable {
 	@FXML
     private TextField searchInput;
 
-    @FXML
+    @SuppressWarnings("static-access")
+	@FXML
     void searchBtn(ActionEvent event) {
     	Images.query = searchInput.getText();
+    	
+    	String[] tempString;
+    	
+    	tempString = Images.query.split(" ");
+    	Images.query = String.join("%20", tempString);
+    	
+    	System.out.println(Images.query);
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("../application/ImageView.fxml"));
 			Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			stage.close();
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.show();
