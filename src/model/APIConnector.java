@@ -93,7 +93,7 @@ public class APIConnector {
 		        
 			}
 		}catch(Exception e) {
-			System.out.println("Caught");
+			System.out.println("Caught error in authConnectApi method in APIConnector.java");
 			e.printStackTrace();
 		}
 		
