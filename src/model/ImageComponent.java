@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+//@class -> Image component is the entire component with all data for one image component.
+//Should hold a query for the image, the actual imageLink, and all the tags and confidence levels for that image. All of our data compressed into one class/object
 public class ImageComponent {
 	public String query, imageLink;
 	public ArrayList<Classification> imageClassifications = new ArrayList<Classification>();

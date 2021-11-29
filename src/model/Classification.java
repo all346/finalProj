@@ -1,5 +1,6 @@
 package model;
 
+//@class -> A classification will hold a String tag saying WHAT it's classified as and an int of confidenceLvl to show how strong that tag is
 public class Classification {
 	
 	public double confidenceLvl;

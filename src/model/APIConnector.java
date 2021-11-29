@@ -10,6 +10,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+
+
+//
+//@class -> Takes in a query and will establish a connection with the API in order to allow for REST calls 
+//@methods -> Creates Connection Between API's and also creates a JSONArray of the response received from API Calls to bring to frontend
 public class APIConnector {
 	public String apiUrl;
 	

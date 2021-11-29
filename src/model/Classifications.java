@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+//@class -> Holds an array of classifications, sole purpose is to create a classification object from the data received from our API's. In other words formatting our data
 public class Classifications {
 	public ArrayList<Classification> classifications = new ArrayList<Classification>();
 	

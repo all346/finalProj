@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Images;
 
+//@class -> MainController purpose is to take in our user input, place it into our model so we can use it later
 public class MainController implements Initializable {
 	@FXML
     private TextField searchInput;
@@ -31,7 +32,6 @@ public class MainController implements Initializable {
     	tempString = Images.query.split(" ");
     	Images.query = String.join("%20", tempString);
     	
-    	System.out.println(Images.query);
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("../application/ImageView.fxml"));
 			Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();

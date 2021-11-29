@@ -2,6 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
+
+//@class -> 
+// Holds a query, current image count and an arraylist of links to our images.
+//Not used because multipage is not functional
 public class Images {
 	public static int currImage = 0;
 	public static String query;

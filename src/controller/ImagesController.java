@@ -25,6 +25,11 @@ import model.Classifications;
 import model.ImageComponent;
 import model.Images;
 
+
+//@class -> Will control handling the images and placing the backend data onto frontend
+//@methods -> creates the connections with the required API's and used the query to call the API's, later formats them into our model formats.
+// After formatted into desired categories, we will iterate through each piece of data and display on frontend.
+//@methods -> Go home button will handle returning to home page
 public class ImagesController implements Initializable {
 	
 	@FXML
@@ -99,7 +104,6 @@ public class ImagesController implements Initializable {
 //		}
 		
 		int randomPic = (int) (0 + (Math.random() * ((images.size()-1) - 0)));
-		System.out.println(randomPic);
 		
 		JSONArray tagsData = mlConnection.authConnectApi((String) images.get(randomPic));
 		ImageComponent.allImageData.add(classifications.toClassification(tagsData, (String) images.get(randomPic), Images.query));
