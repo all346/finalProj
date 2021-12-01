@@ -7,6 +7,9 @@ import java.util.Base64;
 import java.util.ResourceBundle;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,37 +89,42 @@ public class ImagesController implements Initializable {
 		Classifications classifications = new Classifications();
 		APIConnector imgConnection = new APIConnector(imageUrl);
 		APIConnector mlConnection = new APIConnector(detectorUrl);
-		
 		refresh();
 
-		JSONObject imgObj = imgConnection.connectAPI(Images.query);
-		JSONArray images = new JSONArray();
-		images = (JSONArray) imgObj.get("results");
+		//Local Image
+		if(Images.isLocal) {
+			String result = mlConnection.connectLocalImage(Images.imagePath);
+			JSONParser parser = new JSONParser();
+			
+			JSONObject uploadID;
+			try {
+				uploadID = (JSONObject) parser.parse(result);
+				uploadID = (JSONObject) uploadID.get("result");
+				JSONArray tagsData = mlConnection.callLocalImage((String) uploadID.get("upload_id"));
+				
+				ImageComponent.allImageData.add(classifications.toClassification(tagsData, Images.imagePath, result));
+				updateUI();
+
+				
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			
+		//Query Image
+		}else {
+			JSONObject imgObj = imgConnection.connectAPI(Images.query);
+			JSONArray images = new JSONArray();
+			images = (JSONArray) imgObj.get("results");
+			
+			int randomPic = (int) (0 + (Math.random() * ((images.size()-1) - 0)));
+			
+			JSONArray tagsData = mlConnection.authConnectApi((String) images.get(randomPic));
+			ImageComponent.allImageData.add(classifications.toClassification(tagsData, (String) images.get(randomPic), Images.query));
+			
+			updateUI();
+		}
 		
-		//Adding to ArrayList or URL's
-//		for(int i = 1; i < images.size(); i++) { 
-//			if(i % 2 == 0) {
-//				Images.imageLinks.add((String) images.get(i));
-//			}
-//			if(i > 8) {
-//				break;
-//			}
-//		}
-		
-		int randomPic = (int) (0 + (Math.random() * ((images.size()-1) - 0)));
-		
-		JSONArray tagsData = mlConnection.authConnectApi((String) images.get(randomPic));
-		ImageComponent.allImageData.add(classifications.toClassification(tagsData, (String) images.get(randomPic), Images.query));
-		
-		//Iterating through list of URL's to send them to ML and receive back Classifications
-		//Cannot call API more because of call limit
-//		for(int i = 0; i < 3; i++) {
-////		JSONArray tagsData = mlConnection.authConnectApi(Images.imageLinks.get(i));
-//			JSONArray tagsData = mlConnection.authConnectApi((String) images.get(i));
-//			ImageComponent.allImageData.add(classifications.toClassification(tagsData, (String) images.get(i), Images.query));
-//		}
-		
-		updateUI();
 	}
 	
 	public void refresh() {
@@ -127,11 +135,6 @@ public class ImagesController implements Initializable {
 	
 	public void updateUI() {
 		ImageComponent.currentComponent = ImageComponent.allImageData.get(Images.currImage);
-		
-//		System.out.println(ImageComponent.currentComponent);
-//		System.out.println(ImageComponent.currentComponent.imageClassifications.get(2).confidenceLvl);
-		
-		//Iterating through classifications to display them
 		Image image = new Image(ImageComponent.currentComponent.imageLink);
 		foundImage.setImage(image);
 		

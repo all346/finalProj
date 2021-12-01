@@ -8,6 +8,8 @@ import java.util.ArrayList;
 //Not used because multipage is not functional
 public class Images {
 	public static int currImage = 0;
+	public static boolean isLocal = false;
+	public static String imagePath = "";
 	public static String query;
 	public static ArrayList<String> imageLinks = new ArrayList<String>();
 	
